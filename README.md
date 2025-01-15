@@ -2,6 +2,19 @@
 
 ![intro](https://github.com/laktak/extrakto/wiki/assets/intro2.gif)
 
+## Changes in this Fork
+
+### Multiple tmux versions usage
+
+Instead of using the command `tmux` directly `$TMUX_BIN` is used,
+to allow running an inner tmux server with a different version of tmux.
+A necessity when experimenting with backwards compatibility of plugins etc.
+
+If TMUX_BIN is not defined it will be set to `tmux` so this should be usable
+also when the TMUX_BIN env variable is not defined.
+
+## The rest of this fork is unchanged
+
 **Output completions** - you can complete commands that require you to retype text that is already on the screen. This works everywhere, even in remote ssh sessions.
 
 You can **fuzzy find your text** instead of selecting it by hand:

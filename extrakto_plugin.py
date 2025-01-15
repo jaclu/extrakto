@@ -48,10 +48,12 @@ DEFAULT_OPTIONS = {
     "@extrakto_open_tool": "auto",
 }
 
+TMUX_BIN = os.environ.get("TMUX_BIN") or "tmux"
+
 
 def get_option(option):
     option_value = (
-        subprocess.check_output(["tmux", "show-option", "-gqv", option])
+        subprocess.check_output([TMUX_BIN, "show-option", "-gqv", option])
         .decode("utf-8")
         .strip()
     )
@@ -159,30 +161,30 @@ class ExtraktoPlugin:
             # check terminal size, zoom pane if too small
             lines = int(subprocess.check_output("tput lines", shell=True))
             if lines < 7:
-                subprocess.run("tmux resize-pane -Z", shell=True)
+                subprocess.run(f"{TMUX_BIN} resize-pane -Z", shell=True)
 
     def copy(self, text):
         if self.clip_tool_run == "fg":
             # run in foreground as OSC-52 copying won't work otherwise
-            subprocess.run(["tmux", "set-buffer", "--", text], check=True)
+            subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
             subprocess.run(
-                ["tmux", "run-shell", f"tmux show-buffer|{self.clip_tool}"], check=True
+                [TMUX_BIN, "run-shell", f"{TMUX_BIN} show-buffer|{self.clip_tool}"], check=True
             )
         elif self.clip_tool_run == "tmux_osc52":
             # use native tmux 3.2 OSC 52 functionality
-            subprocess.run(["tmux", "set-buffer", "-w", "--", text], check=True)
+            subprocess.run([TMUX_BIN, "set-buffer", "-w", "--", text], check=True)
         else:
             # run in background as xclip won't work otherwise
-            subprocess.run(["tmux", "set-buffer", "--", text], check=True)
+            subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
             subprocess.run(
-                ["tmux", "run-shell", "-b", f"tmux show-buffer|{self.clip_tool}"],
+                [TMUX_BIN, "run-shell", "-b", f"{TMUX_BIN} show-buffer|{self.clip_tool}"],
                 check=True,
             )
 
     def open(self, path):
         if self.open_tool:
             subprocess.run(
-                ["tmux", "run-shell", "-b", f"cd -- $PWD; {self.open_tool} {path}"],
+                [TMUX_BIN, "run-shell", "-b", f"cd -- $PWD; {self.open_tool} {path}"],
                 check=True,
             )
 
@@ -205,7 +207,7 @@ class ExtraktoPlugin:
 
         if self.grab_area.startswith("window"):
             panes = subprocess.check_output(
-                ["tmux", "list-panes", "-F", "#{pane_active}:#{pane_id}"],
+                [TMUX_BIN, "list-panes", "-F", "#{pane_active}:#{pane_id}"],
                 universal_newlines=True,
             ).split("\n")
             for pane in panes:
@@ -216,7 +218,7 @@ class ExtraktoPlugin:
                     captured += (
                         subprocess.check_output(
                             [
-                                "tmux",
+                                TMUX_BIN,
                                 "capture-pane",
                                 "-pJS",
                                 capture_pane_start,
@@ -230,7 +232,7 @@ class ExtraktoPlugin:
 
         captured += subprocess.check_output(
             [
-                "tmux",
+                TMUX_BIN,
                 "capture-pane",
                 "-pJS",
                 capture_pane_start,
@@ -245,7 +247,7 @@ class ExtraktoPlugin:
     def has_single_pane(self):
         num_panes = len(
             subprocess.check_output(
-                ["tmux", "list-panes"], universal_newlines=True
+                [TMUX_BIN, "list-panes"], universal_newlines=True
             ).split("\n")
         )
         if self.launch_mode == "popup":
@@ -345,9 +347,9 @@ class ExtraktoPlugin:
                 self.copy(text)
                 return 0
             elif key == self.insert_key:
-                subprocess.run(["tmux", "set-buffer", "--", text], check=True)
+                subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
                 subprocess.run(
-                    ["tmux", "paste-buffer", "-p", "-t", self.trigger_pane], check=True
+                    [TMUX_BIN, "paste-buffer", "-p", "-t", self.trigger_pane], check=True
                 )
                 return 0
             elif key == self.filter_key:
@@ -385,7 +387,7 @@ class ExtraktoPlugin:
             elif key == self.edit_key:
                 subprocess.run(
                     [
-                        "tmux",
+                        TMUX_BIN,
                         "send-keys",
                         "-t",
                         self.trigger_pane,

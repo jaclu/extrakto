@@ -14,5 +14,5 @@ extrakto_key=$(get_option "@extrakto_key" "tab")
 lowercase_key=$(echo $extrakto_key | tr '[:upper:]' '[:lower:]')
 
 if [ "$lowercase_key" != "none" ]; then
-	tmux bind-key "${extrakto_key}" run-shell "\"$extrakto_open\" \"#{pane_id}\""
+	$TMUX_BIN bind-key "${extrakto_key}" run-shell "\"$extrakto_open\" \"#{pane_id}\""
 fi

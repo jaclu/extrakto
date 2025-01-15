@@ -12,7 +12,7 @@ pane_id=$1
 split_direction=$(get_option "@extrakto_split_direction" "a")
 
 if [ "$split_direction" = "a" ]; then
-	if [ -n "$(tmux list-commands popup 2>/dev/null)" ]; then
+	if [ -n "$($TMUX_BIN list-commands popup 2>/dev/null)" ]; then
 		split_direction="p"
 	else
 		split_direction="v"
@@ -33,10 +33,9 @@ if [ "$split_direction" = "p" ]; then
 	popup_position=$(get_option "@extrakto_popup_position" "C")
 	popup_x=$(echo $popup_position | cut -d',' -f1)
 	popup_y=$(echo $popup_position | cut -d',' -f2)
-
 	rc=129
 	while [ $rc -eq 129 ]; do
-		tmux popup \
+		$TMUX_BIN popup \
 			-w "${popup_width}" \
 			-h "${popup_height:-${popup_width}}" \
 			-x "${popup_x}" \
@@ -48,8 +47,8 @@ if [ "$split_direction" = "p" ]; then
 	exit $rc
 else
 	split_size=$(get_option "@extrakto_split_size" 7)
-	tmux split-window \
+	$TMUX_BIN split-window \
 		-${split_direction} \
 		$extra_options \
-		-l ${split_size} "tmux setw remain-on-exit off; ${extrakto} ${pane_id} split"
+		-l ${split_size} "$TMUX_BIN setw remain-on-exit off; ${extrakto} ${pane_id} split"
 fi
