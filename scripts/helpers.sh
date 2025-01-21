@@ -95,7 +95,10 @@ if [[ -f "$f_missing_dependeny" ]]; then
         get_tmux_vers
 
         if tmux_vers_compare 3.2; then
-            $TMUX_BIN display-popup -h 3 printf " $err_msg"
+            # Termux doesn't do the default 50% size on smaller screens
+            # without it being spelled out
+            $TMUX_BIN display-popup -h 50% -w 50% \
+                      -T " Dependency issue " echo "$err_msg"
         else
             $TMUX_BIN display "$err_msg"
         fi
