@@ -1,1 +1,10 @@
+*~
+*#
+
 __pycache__/
+
+# dependency hint
+.missing_dependeny
+
+# cache for olint multilinter
+.cache.olint

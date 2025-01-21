@@ -3,12 +3,12 @@
 import os
 import platform
 import re
-import subprocess
 import shutil
+import subprocess
 import sys
 import traceback
-
 from collections import OrderedDict
+
 from extrakto import Extrakto, get_lines
 
 PLATFORM = platform.system()
@@ -168,7 +168,8 @@ class ExtraktoPlugin:
             # run in foreground as OSC-52 copying won't work otherwise
             subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
             subprocess.run(
-                [TMUX_BIN, "run-shell", f"{TMUX_BIN} show-buffer|{self.clip_tool}"], check=True
+                [TMUX_BIN, "run-shell", f"{TMUX_BIN} show-buffer|{self.clip_tool}"],
+                check=True,
             )
         elif self.clip_tool_run == "tmux_osc52":
             # use native tmux 3.2 OSC 52 functionality
@@ -177,7 +178,12 @@ class ExtraktoPlugin:
             # run in background as xclip won't work otherwise
             subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
             subprocess.run(
-                [TMUX_BIN, "run-shell", "-b", f"{TMUX_BIN} show-buffer|{self.clip_tool}"],
+                [
+                    TMUX_BIN,
+                    "run-shell",
+                    "-b",
+                    f"{TMUX_BIN} show-buffer|{self.clip_tool}",
+                ],
                 check=True,
             )
 
@@ -212,7 +218,7 @@ class ExtraktoPlugin:
             ).split("\n")
             for pane in panes:
                 # exclude the active (for split) and trigger panes
-                # in popup mode the active and tigger panes are the same
+                # in popup mode the active and trigger panes are the same
                 # todo: split by :
                 if pane.startswith("0:") and pane[:2] != self.trigger_pane:
                     captured += (
@@ -349,7 +355,8 @@ class ExtraktoPlugin:
             elif key == self.insert_key:
                 subprocess.run([TMUX_BIN, "set-buffer", "--", text], check=True)
                 subprocess.run(
-                    [TMUX_BIN, "paste-buffer", "-p", "-t", self.trigger_pane], check=True
+                    [TMUX_BIN, "paste-buffer", "-p", "-t", self.trigger_pane],
+                    check=True,
                 )
                 return 0
             elif key == self.filter_key:

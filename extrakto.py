@@ -4,7 +4,6 @@ import os
 import re
 import sys
 import traceback
-
 from argparse import ArgumentParser
 from collections import OrderedDict
 from configparser import ConfigParser

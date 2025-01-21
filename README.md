@@ -13,6 +13,14 @@ A necessity when experimenting with backwards compatibility of plugins etc.
 If TMUX_BIN is not defined it will be set to `tmux` so this should be usable
 also when the TMUX_BIN env variable is not defined.
 
+### Added dependency checks
+
+Displays a waarning if a dependency is missing
+
+### Linting
+
+Primarily related to changes done in this fork, unrelated python glitches ignored
+
 ## The rest of this fork is unchanged
 
 **Output completions** - you can complete commands that require you to retype text that is already on the screen. This works everywhere, even in remote ssh sessions.

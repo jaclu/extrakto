@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import unittest
-import subprocess
 import os
+import subprocess
 import sys
+import unittest
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 

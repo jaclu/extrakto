@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 echo if you see this message you are opening extrakto manually, please use open.sh
-read # pause
+read -r # pause
 exit 1
