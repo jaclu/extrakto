@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
 BASE_PATH_E="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-f_missing_dependeny="$BASE_PATH_E"/.missing_dependeny
 
-if ! command -v fzf >/dev/null && ! command -v sk >/dev/null; then
-    # If dependency ruby not found, flag this issue, display error, then abort
-    touch "$f_missing_dependeny"
-fi
+# shellcheck source=/dev/null
+source "$BASE_PATH_E"/scripts/tmux-plugin-tools.sh
+tpt_dependency_check "fzf|sk" || exit 1
 
 source "$BASE_PATH_E/scripts/helpers.sh"
 
