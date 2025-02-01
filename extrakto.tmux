@@ -3,8 +3,7 @@
 BASE_PATH_E="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # shellcheck source=/dev/null
-source "$BASE_PATH_E"/scripts/tmux-plugin-tools.sh
-tpt_dependency_check "fzf|sk" || exit 1
+"$BASE_PATH_E"/scripts/tmux-plugin-tools.sh dependency-check "fzf|sk" || exit 1
 
 source "$BASE_PATH_E/scripts/helpers.sh"
 
