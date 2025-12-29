@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_PATH_E="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASE_PATH_E="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 "$BASE_PATH_E"/scripts/tmux-plugin-tools.sh dependency-check "fzf|sk" || exit 1
