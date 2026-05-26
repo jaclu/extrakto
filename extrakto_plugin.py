@@ -313,7 +313,7 @@ class ExtraktoPlugin:
                     "--print-query",
                     f"--query={query}",
                     f"--header={header}",
-                    f"--expect=ctrl-c,ctrl-g,esc",
+                    "--expect=ctrl-c,ctrl-g,esc",
                     f"--expect={self.insert_key},{self.copy_key},{self.filter_key},{self.edit_key},{self.open_key},{self.grab_key},{self.help_key}",
                     "--tiebreak=index",
                     f"--layout={self.fzf_layout}",
@@ -323,7 +323,7 @@ class ExtraktoPlugin:
                     fzf_cmd,
                     get_cap(mode, self.capture_panes()),
                 )
-            except Exception as e:
+            except Exception:
                 msg = (
                     str(fzf_cmd)
                     + "\n"
