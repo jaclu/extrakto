@@ -40,7 +40,7 @@ class Extrakto:
         conf.read([default_conf, user_conf], encoding="utf-8")
         sections = conf.sections()
 
-        if not "path" in sections or not "url" in sections:
+        if "path" not in sections or "url" not in sections:
             raise ExtraktoException("extrakto.conf incomplete, path and url must exist")
 
         self.min_length = min_length
@@ -81,7 +81,7 @@ class Extrakto:
                 )
 
     def __getitem__(self, key):
-        if not key in self.fdict:
+        if key not in self.fdict:
             raise ExtraktoException(f"Unknown filter {key}")
         return self.fdict[key]
 
@@ -115,16 +115,19 @@ class FilterDef:
         self.min_length = min_length
 
     def filter(self, text):
-        res = list()
-        if self.extrakto.prefix_name:
-            add = lambda name, value: res.append(f"{name}: {value}")
-        else:
-            add = lambda name, value: res.append(value)
+        res = []
+
+        prefix = self.extrakto.prefix_name
+
+        def add(name, value):
+            if prefix:
+                res.append(f"{name}: {value}")
+            else:
+                res.append(value)
 
         for m in re.finditer(self.regex, "\n" + text, flags=re.I):
             item = "".join(filter(None, m.groups()))
 
-            # strip invalid characters (like punctuation or markdown syntax)
             if self.lstrip:
                 item = item.lstrip(self.lstrip)
             if self.rstrip:
@@ -134,12 +137,13 @@ class FilterDef:
                 if not self.exclude or not re.search(self.exclude, item, re.I):
                     if self.extrakto.alt:
                         for i, altre in enumerate(self.alt):
-                            m = re.search(altre, item)
-                            if m:
-                                add(f"{self.name}{i+2}", m[1])
-                    add(self.name, item)
-        return res
+                            m2 = re.search(altre, item)
+                            if m2:
+                                add(f"{self.name}{i+2}", m2[1])
 
+                    add(self.name, item)
+
+        return res
 
 def get_lines(text, *, min_length=MIN_LENGTH_DEFAULT, prefix_name=False):
     lines = []
@@ -239,6 +243,6 @@ if __name__ == "__main__":
     except ExtraktoException as e:
         print(e, file=sys.stderr)
         sys.exit(1)
-    except Exception as e:
+    except Exception:
         print(traceback.format_exc(), file=sys.stderr)
         sys.exit(1)
