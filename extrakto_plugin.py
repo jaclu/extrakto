@@ -100,7 +100,6 @@ def get_cap(mode, data):
 
 
 class ExtraktoPlugin:
-
     def __init__(self, trigger_pane, launch_mode):
         self.trigger_pane = trigger_pane
         self.launch_mode = launch_mode
