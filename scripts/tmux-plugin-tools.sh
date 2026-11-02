@@ -354,7 +354,8 @@ tpt_parse_cmd_line() {
             echo
             echo "dependency-check 'space separated string of dependencies'"
             echo "  If tmux >= 3.2 a popup will be used to display failed dependencies"
-            echo "  For older tmux versions and if called from outside tmux, It will be printed."
+            echo "  For older tmux versions and if called from outside tmux,"
+            echo "  It will be printed."
             echo
             echo "env"
             echo "  Display environment picked up"
@@ -364,8 +365,8 @@ tpt_parse_cmd_line() {
             echo "    tmux_vers_ok - to check if a given feature is available"
             echo "    tpt_dependency_check - to check if a tool is installed"
             echo "      skip-notifications - lets the caller present failed dependencies"
-            echo "        Only returning false. Failed dependencies are set in the variable"
-            echo "        tpt_missing_dependencies"
+            echo "        Only returning false. Failed dependencies are set"
+            echo "        in the variable tpt_missing_dependencies"
             echo
             ;;
     esac
