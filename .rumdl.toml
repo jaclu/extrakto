@@ -1,0 +1,6 @@
+[MD013]
+line-length = 92
+code-block-line-length = 120
+
+[MD033]
+allowed_elements = ["a", "img"]
